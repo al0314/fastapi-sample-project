@@ -1,35 +1,102 @@
+# Optimize the Dockerfile if possible
+# Build a docker image and push it to the docker hub public repository
+# In docker-compose use the docker image from the docker hub, instead of building it from the context
+# Add container name to the services
+# Add volumes to the services 
+# Make sure volumes are created in the project's root
+# Add network to the services
+# Set the root user name and password for the MongoDB using the environment variables
+# Reconfigure the MongoDB URL connection in the codebase
+# Use environment variable for Redis and MongoDB connection in the codebase
+# Use environment variables in docker-compose to make the configuration as dynamic as possible
+# Ensure Redis and MongoDB cannot be accessed from the host machine
+# Update the env.example file with all the variable names and their values used in the project
+# Submit the forked git repository link as class work
+
+
+
+
+
+
+
+
+
 version: '3.8'
 
 services:
+  
   fastapi:
-    build:
-      context: .
-      dockerfile: docker/fastapi/Dockerfile
+    container_name: fastapi_docker
+    #build:
+      # context: 
+      # dockerfile: ./Dockerfile
+    image: al0314/optimize-docker:v1
     ports:
-      - "8000:8000"
+      - "${API_PORT}:8000"
+    networks:
+      - custome_network
+    environment:
+      - MONGO_URI=${MONGO_URI}
+      - REDIS_URI=${REDIS_URI}
+      
+
     depends_on:
       - redis
       - mongodb
+    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+      
 
   celery:
-    build:
-      context: .
-      dockerfile: docker/celery/Dockerfile
+    container_name: celery_worker
+    # build:
+    #   context: https://hub.docker.com/repository/docker/al0314/optimize-docker/tags/v1/sha256-5a3e0a80d894ca265287856cc6fad3b66c1d9bdb481262a65697a1e5b4fbc5c6
+    #   dockerfile: ./Dockerfile
+    image: al0314/optimize-docker:v1
+    networks:
+      - custome_network
+    environment:
+      - MONGO_URI=${MONGO_URI}
+      - REDIS_URI=${REDIS_URI}
+    volumes:
+      - ./data:/app/data 
     depends_on:
       - redis
       - mongodb
+    command: ["celery", "-A", "tasks.celery_app", "worker", "--loglevel=info"]
 
   redis:
+    container_name: Ladis_wassharrum
     image: redis:7-alpine
-    ports:
-      - "6379:6379"
+    networks:
+      - custome_network
+    # ports:
+    #   - "${REDIS_PORT}:6378"
+    expose:
+      - 6378
 
   mongodb:
-    image: mongo:6.0
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongo_data:/data/db
+    container_name: mongoose
+    image: mongo:4.4
+    # ports:
+    #   - "${MONGO_PORT}:27017"
+    # environment:
+    #   - MONGO_USERNAME= 
+    expose:
+      - 27017
+    networks:
+      - custome_network
+    environment:
+      - MONGO_URI=${MONGO_URI}
+      - MONGO_INITDB_ROOT_USERNAME = ${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD = ${MONGO_INITDB_ROOT_PASSWORD}
 
-volumes:
-  mongo_data:
+    volumes:
+      - ./data:/data/db
+
+# volumes:
+#   ./data:
+  
+
+networks:
+  custome_network:
+    driver: bridge
