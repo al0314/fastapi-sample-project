@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from tasks import create_task
+from app.tasks import create_task
 from pymongo import MongoClient
 
 client = MongoClient("mongodb://mongodb:27017/")
