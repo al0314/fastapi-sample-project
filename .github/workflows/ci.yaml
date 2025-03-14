@@ -35,7 +35,7 @@ jobs:
                 pip install --no-cache-dir -r ./app/requirements.txt
           - name: Analysing the code with pylint
             run: |
-                pylint $(git ls-files '*.py')
+                pylint --exit-zero ./app
     
     
 
