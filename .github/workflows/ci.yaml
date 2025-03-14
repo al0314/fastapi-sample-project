@@ -35,30 +35,11 @@ jobs:
             run: |
                 pylint $(git ls-files '*.py')
     
-    unit-test:
-      runs-on: ubuntu-latest
-      needs: lint-check 
-
-      steps:
-        - name: Checkout Code
-          uses: actions/checkout@v4
-
-        - name: Set Up Python
-          uses: actions/setup-python@v4
-          with:
-            python-version: 3.12
-
-        - name: Install Dependencies
-          run: |
-            pip install --no-cache-dir -r requirements-dev.txt
-            pip install pytest
-
-        - name: Run Tests
-          run: |
-            pytest app/tests/
+    
 
     CodeQL_Advanced:
       name: CodeQL Advanced
+      needs: lint-check 
       runs-on: ubuntu-latest
       permissions:
           actions: read
@@ -71,4 +52,26 @@ jobs:
           uses: github/codeql-action/init@v3
         - name: Perform CodeQL Analysis
           uses: github/codeql-action/analyze@v3
-    
+
+
+    unit-test:
+          runs-on: ubuntu-latest
+          needs: CodeQL_Advanced 
+
+          steps:
+            - name: Checkout Code
+              uses: actions/checkout@v4
+
+            - name: Set Up Python
+              uses: actions/setup-python@v4
+              with:
+                python-version: 3.12
+
+            - name: Install Dependencies
+              run: |
+                pip install --no-cache-dir -r requirements-dev.txt
+                pip install pytest
+
+            - name: Run Tests
+              run: |
+                pytest app/tests/
