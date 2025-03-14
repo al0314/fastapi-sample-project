@@ -1,0 +1,15 @@
+name: enable auto merge
+
+on:
+    workflow_run:
+        workflows: ["ci.yaml"]
+        types:
+            - completed
+jobs:
+    pr-merge:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Enable Pull Request Automerge
+              uses: peter-evans/enable-pull-request-automerge@v3.0.0
+              with:
+                pull-request-number: 1
