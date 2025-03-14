@@ -72,4 +72,4 @@ jobs:
 
             - name: Run Tests
               run: |
-                pytest ./app/
+                pytest ./app/tests
