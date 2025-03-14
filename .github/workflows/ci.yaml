@@ -24,10 +24,6 @@ jobs:
           
           - name: install dependencies dev
             run: pip install --no-cache-dir -r requirements-dev.txt
-          - name: Run Linter
-            run: pylint --exit-zero ./app
-      
-      
       
           - name: Install dependencies
             run: |
@@ -35,7 +31,7 @@ jobs:
                 pip install --no-cache-dir -r ./app/requirements.txt
           - name: Analysing the code with pylint
             run: |
-                pylint --exit-zero ./app
+                pylint --exit-zero ./app/
     
     
 
@@ -76,4 +72,4 @@ jobs:
 
             - name: Run Tests
               run: |
-                pytest app/tests/
+                pytest ./app/
