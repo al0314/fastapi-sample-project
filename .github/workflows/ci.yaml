@@ -23,7 +23,7 @@ jobs:
               python-version: 3.12
           
           - name: install dependencies
-            run: pip install --no-cach-dir -r reqirements-dev.txt
+            run: pip install --no-cache-dir -r reqirements-dev.txt
           - name: Run Linter
             run: pylint --exit-zero ./app
       
