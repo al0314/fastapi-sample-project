@@ -4,7 +4,11 @@ on:
     push: 
       branches: "feature/*"
     pull_request:
-      branches: "main"
+      #branches: "main"
+      types:
+        ['opened','reopened']
+
+
 
 
 permissions:
