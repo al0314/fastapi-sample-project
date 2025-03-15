@@ -2,7 +2,7 @@ name: Enable auto merge
 
 on:
     workflow_run:
-        workflows: ["ci.yaml"]
+        workflows: ["Code testing"]
         types:
             - completed
 jobs:
