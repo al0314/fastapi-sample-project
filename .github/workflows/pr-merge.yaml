@@ -6,10 +6,35 @@ on:
         types:
             - completed
 jobs:
+    create-pull-request: 
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+            - name: Create Pull Request
+          
+              env:
+                GH_TOKEN: ${{ secrets.GIT_PAT }}
+              run: |
+                if gh pr list --base dev --head feature/new --state open | grep -q "feature/new"; then
+                    echo "PR already exists, skipping creation." 
+                else
+                    gh pr create \
+                    --base dev \
+                    --head "feature/*" \
+                    --title "Auto PR: Merge feature/new into development" \
+                    --body "This pull request was automatically created by GitHub Action."
+                    echo "PR created successfully."
+                fi
+            
+    
+    
+    
+    
     pr-merge:
         runs-on: ubuntu-latest
         steps:
             - name: Enable Pull Request Automerge
               uses: peter-evans/enable-pull-request-automerge@v3.0.0
               with:
-                pull-request-number: 1
+                pull-request-number: ${{github.event.number}}
