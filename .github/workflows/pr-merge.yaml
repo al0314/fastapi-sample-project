@@ -1,7 +1,10 @@
 name: Enable auto merge
 
 on:
-    workflow_run:
+  
+  workflow_dispatch:
+  workflow_run:
+        
         workflows: ["Code testing"]
         types:
             - completed
