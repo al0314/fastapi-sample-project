@@ -1,0 +1,46 @@
+name: Enable auto merge
+
+on:
+
+  workflow_dispatch:
+  workflow_run:
+        
+        workflows: ["Code testing"]
+        types:
+            - completed
+jobs:
+    create-pull-request: 
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+            - name: Create Pull Request
+          
+              env:
+                GH_TOKEN: ${{ secrets.GIT_PAT2 }}
+              run: |
+                current_branch=$(git rev-parse --abbrev-ref HEAD)
+
+                if gh pr list --base dev --head "feature/*" --state open | grep -q "feature/"; then
+                    echo "PR already exists, skipping creation." 
+                else
+                    gh pr create --dry-run \
+                    --base dev \
+                    --head "$current_branch" \
+                    --title "Auto PR: Merge $current_branch into development" \
+                    --body "This pull request was automatically created by GitHub Action."
+                    echo "PR created successfully."
+                fi
+            
+    
+    
+    
+    
+    pr-merge:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Enable Pull Request Automerge
+              uses: peter-evans/enable-pull-request-automerge@v3.0.0
+              with:
+                pull-request-number: ${{github.event.number}}
+                merge-method: rebase 

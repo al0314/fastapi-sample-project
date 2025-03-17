@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from tasks import create_task
+from app.tasks import create_task
 from pymongo import MongoClient
 
 client = MongoClient("mongodb://mongodb:27017/")
@@ -21,4 +21,3 @@ def run_task(data: str):
 def get_all_tasks():
     tasks = list(collection.find({}, {"_id": 0}))
     return {"tasks": tasks}
-

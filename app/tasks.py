@@ -1,5 +1,5 @@
-from celery import Celery
 import time
+from celery import Celery
 import pymongo
 
 celery_app = Celery(
