@@ -14,14 +14,16 @@ jobs:
             - name: Create Pull Request
           
               env:
-                GH_TOKEN: ${{ secrets.GIT_PAT }}
+                GH_TOKEN: ${{ secrets.GIT_PAT2 }}
               run: |
-                if gh pr list --base dev --head feature/new --state open | grep -q "feature/new"; then
+                current_branch=$(git rev-parse --abbrev-ref HEAD)
+
+                if gh pr list --base dev --head "feature/*" --state open | grep -q "feature/"; then
                     echo "PR already exists, skipping creation." 
                 else
                     gh pr create \
                     --base dev \
-                    --head "feature/*" \
+                    --head "$current_branch" \
                     --title "Auto PR: Merge feature/new into development" \
                     --body "This pull request was automatically created by GitHub Action."
                     echo "PR created successfully."
@@ -38,3 +40,4 @@ jobs:
               uses: peter-evans/enable-pull-request-automerge@v3.0.0
               with:
                 pull-request-number: ${{github.event.number}}
+                merge-method: rebase 
