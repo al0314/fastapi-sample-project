@@ -18,12 +18,12 @@ jobs:
               id: cpr
               uses: peter-evans/create-pull-request@v3
               with:
-                token: ${{ secrets.PAT }}
+                token: ${{ secrets.GIT_PAT2 }}
       
             - name: Enable Pull Request Automerge
               if: steps.cpr.outputs.pull-request-operation == 'created'
               uses: peter-evans/enable-pull-request-automerge@v3
               with:
-                token: ${{ secrets.PAT }}
+                token: ${{ secrets.GIT_PAT2 }}
                 pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
                 merge-method: rebase
