@@ -44,3 +44,4 @@ jobs:
               with:
                 pull-request-number: ${{github.event.number}}
                 merge-method: rebase 
+                repository: dev
