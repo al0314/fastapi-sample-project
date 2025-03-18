@@ -15,33 +15,15 @@ jobs:
             - name: Checkout repository
               uses: actions/checkout@v4
             - name: Create Pull Request
-          
-              env:
-                GH_TOKEN: ${{ secrets.GIT_PAT2 }}
-              run: |
-                current_branch=$(git rev-parse --abbrev-ref HEAD)
-
-                if gh pr list --base dev --head "feature/*" --state open | grep -q "feature/"; then
-                    echo "PR already exists, skipping creation." 
-                else
-                    gh pr create --dry-run \
-                    --base dev \
-                    --head "$current_branch" \
-                    --title "Auto PR: Merge $current_branch into development" \
-                    --body "This pull request was automatically created by GitHub Action."
-                    echo "PR created successfully."
-                fi
-            
-    
-    
-    
-    
-    pr-merge:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Enable Pull Request Automerge
-              uses: peter-evans/enable-pull-request-automerge@v3.0.0
+              id: cpr
+              uses: peter-evans/create-pull-request@v3
               with:
-                pull-request-number: ${{github.event.number}}
-                merge-method: rebase 
-                repository: al0314/fast-api-sample-project
+                token: ${{ secrets.PAT }}
+      
+            - name: Enable Pull Request Automerge
+              if: steps.cpr.outputs.pull-request-operation == 'created'
+              uses: peter-evans/enable-pull-request-automerge@v3
+              with:
+                token: ${{ secrets.PAT }}
+                pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+                merge-method: rebase
