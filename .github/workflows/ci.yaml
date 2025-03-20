@@ -85,6 +85,8 @@ jobs:
     auto-merge:
       runs-on: ubuntu-latest
       needs: unit-test
+      env:
+        GH_TOKEN: ${{ secrets.GIT_PAT2 }}
 
       steps:
         - name: Checkout code
