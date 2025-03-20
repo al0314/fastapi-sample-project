@@ -95,9 +95,12 @@ jobs:
             git config --global user.name "CI-bot"
             git config --global user.email "CI-bot@github.com"
         
+        - name: Fetch all branches to ensure we can rebase
+          run: git fetch --all
+      
         - name: Checkout the dev branch
-          run: git checkout dev
-
+          run: |
+              git checkout -b dev origin/dev
         - name: Merge feature branch into dev
           run: |
             FEATURE_BRANCH=$(git rev-parse --abbrev-ref HEAD)
