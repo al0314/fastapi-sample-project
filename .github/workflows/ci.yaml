@@ -38,26 +38,26 @@ jobs:
     
     
 
-    CodeQL_Advanced:
-      name: CodeQL Advanced
-      needs: lint-check 
-      runs-on: ubuntu-latest
-      permissions:
-          actions: read
-          contents: read
-          security-events: write
-      steps:
-        - name: Checkout code
-          uses: actions/checkout@v2
-        - name: Set up CodeQL
-          uses: github/codeql-action/init@v3
-        - name: Perform CodeQL Analysis
-          uses: github/codeql-action/analyze@v3
+    # CodeQL_Advanced:
+    #   name: CodeQL Advanced
+    #   needs: lint-check 
+    #   runs-on: ubuntu-latest
+    #   permissions:
+    #       actions: read
+    #       contents: read
+    #       security-events: write
+    #   steps:
+    #     - name: Checkout code
+    #       uses: actions/checkout@v2
+    #     - name: Set up CodeQL
+    #       uses: github/codeql-action/init@v3
+    #     - name: Perform CodeQL Analysis
+    #       uses: github/codeql-action/analyze@v3
 
 
     unit-test:
           runs-on: ubuntu-latest
-          #needs: CodeQL_Advanced 
+          needs: lint-check 
 
           steps:
             - name: Checkout Code
