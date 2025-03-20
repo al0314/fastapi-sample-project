@@ -94,11 +94,14 @@ jobs:
           run: |
             git config --global user.name "CI-bot"
             git config --global user.email "CI-bot@github.com"
+        
+        - name: Checkout the dev branch
+          run: git checkout dev
 
         - name: Merge feature branch into dev
           run: |
             FEATURE_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-            git rebase origin/$FEATURE_BRANCH --no-ff --commit --no-edit
+            git merge origin/$FEATURE_BRANCH --no-ff --commit --no-edit
         
         - name: Push merged changes to dev
           run: git push origin dev
