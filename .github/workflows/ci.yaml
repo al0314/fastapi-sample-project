@@ -3,8 +3,8 @@ name: Code testing
 on:
   push:
     branches:
-      - 'feature/*'
-    # workflow_dispatch:
+      - feature/code-test
+  workflow_dispatch:
 
 
 
