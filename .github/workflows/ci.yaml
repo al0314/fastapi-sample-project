@@ -85,8 +85,6 @@ jobs:
     auto-merge:
       runs-on: ubuntu-latest
       needs: unit-test
-      env:
-        GH_TOKEN: ${{ secrets.GIT_PAT2 }}
 
       steps:
         - name: Checkout code
@@ -109,4 +107,4 @@ jobs:
             git merge origin/$FEATURE_BRANCH --no-ff --commit --no-edit
         
         - name: Push merged changes to dev
-          run: git push origin dev
+          run: git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} dev
