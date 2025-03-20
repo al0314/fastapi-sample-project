@@ -3,7 +3,7 @@ name: Code testing
 on:
   push:
     branches:
-      - "feature/*"
+      - 'feature/*'
     # workflow_dispatch:
 
 
