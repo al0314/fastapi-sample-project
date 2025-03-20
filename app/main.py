@@ -21,4 +21,3 @@ def run_task(data: str):
 def get_all_tasks():
     tasks = list(collection.find({}, {"_id": 0}))
     return {"tasks": tasks}
-

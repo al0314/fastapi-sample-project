@@ -1,26 +1,3 @@
-# Optimize the Dockerfile if possible
-# Build a docker image and push it to the docker hub public repository
-# In docker-compose use the docker image from the docker hub, instead of building it from the context
-# Add container name to the services
-# Add volumes to the services 
-# Make sure volumes are created in the project's root
-# Add network to the services
-# Set the root user name and password for the MongoDB using the environment variables
-# Reconfigure the MongoDB URL connection in the codebase
-# Use environment variable for Redis and MongoDB connection in the codebase
-# Use environment variables in docker-compose to make the configuration as dynamic as possible
-# Ensure Redis and MongoDB cannot be accessed from the host machine
-# Update the env.example file with all the variable names and their values used in the project
-# Submit the forked git repository link as class work
-
-
-
-
-
-
-
-
-
 version: '3.8'
 
 services:
