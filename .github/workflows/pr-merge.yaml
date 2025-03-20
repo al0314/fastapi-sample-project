@@ -2,7 +2,7 @@ name: Enable auto merge
 
 on:
 
-  workflow_dispatch:
+  # workflow_dispatch:
   workflow_run:
         
         workflows: ["Code testing"]
@@ -19,6 +19,8 @@ jobs:
               uses: peter-evans/create-pull-request@v3
               with:
                 token: ${{ secrets.GIT_PAT2 }}
+                base: dev
+                
       
             - name: Enable Pull Request Automerge
               if: steps.cpr.outputs.pull-request-operation == 'created'

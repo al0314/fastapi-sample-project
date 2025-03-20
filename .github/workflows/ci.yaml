@@ -1,7 +1,10 @@
 name: Code testing
 
 on:
-    workflow_dispatch:
+  push:
+    branches:
+      - "feature/*"
+    # workflow_dispatch:
 
 
 
