@@ -10,7 +10,7 @@ app = FastAPI()
 
 @app.get("/")
 def read_root():
-    return {"message": "FastAPI with Celery and Docker Composed"}
+    return {"message": "FastAPI with Celery and Dockered Composed"}
 
 @app.post("/tasks/{data}")
 def run_task(data: str):
