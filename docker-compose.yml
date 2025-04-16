@@ -7,7 +7,7 @@ services:
     #build:
       # context: 
       # dockerfile: ./Dockerfile
-    image: al0314/optimize-docker:v1
+    image: al0314/optimize-docker:v3
     ports:
       - "${API_PORT}:8000"
     networks:
@@ -28,7 +28,7 @@ services:
     # build:
     #   context: https://hub.docker.com/repository/docker/al0314/optimize-docker/tags/v1/sha256-5a3e0a80d894ca265287856cc6fad3b66c1d9bdb481262a65697a1e5b4fbc5c6
     #   dockerfile: ./Dockerfile
-    image: al0314/optimize-docker:v1
+    image: al0314/optimize-docker:v3
     networks:
       - custome_network
     environment:
@@ -53,7 +53,7 @@ services:
 
   mongodb:
     container_name: mongoose
-    image: mongo:4.4
+    image: mongo:4.4.6
     # ports:
     #   - "${MONGO_PORT}:27017"
     # environment:
