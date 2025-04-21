@@ -2,6 +2,12 @@
   hosts: my_vms
   gather_facts: yes
   tasks:
+    - name: Enable service ssh, and not touch the state
+      ansible.builtin.service:
+        name: ssh
+        enabled: yes
+      become: yes
+
     - name: Update apt cache
       apt:
         update_cache: yes
@@ -21,18 +27,23 @@
         state: directory
         mode: '0755'
 
-    - name: download gpg key to keyrings directory
-      apt_key:
+    - name: Ensure gpg is installed
+      apt:
+        name: gnupg
+        state: present
+      become: yes
+
+    - name: Add GPG key
+      get_url:
         url: https://download.docker.com/linux/ubuntu/gpg
-        keyring: /etc/apt/keyrings/docker.asc
-      become: true 
-    
-    - name: Add APT Repository
+        dest: /etc/apt/keyrings/docker.asc
+
+    - name: Add apt repository
       apt_repository:
         repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu  
         {{ ansible_distribution_release }} stable"
-        state: present
-      become: true
+        filename: docker.asc
+
 
     - name: Update apt cache
       apt:
@@ -46,16 +57,25 @@
       with_items: 
         - docker-ce 
         - docker-ce-cli 
-        - containerd.io 
         - docker-buildx-plugin 
         - docker-compose-plugin
       become: true
       
-    - name: Make sure a Docker is running
-      systemd_service:
+
+    # - name: Add ubuntu user to docker group
+    #   user:
+    #     name: ubuntu
+    #     groups: docker 
+    #     append: true
+    #   become: true
+  
+    - name: Make sure a service unit is running
+      service:
         state: started
         name: docker
-
+        enabled: true
+        use: sysvinit
+    
     - name: Create a directory if it does not exist
       ansible.builtin.file:
         path: /opt/fastapi
@@ -65,17 +85,32 @@
     - name: Copy docker compose file to VM
       ansible.builtin.copy:
         src: /home/vboxuser/Desktop/fastapi-sample-project/docker-compose.yml
-        dest: /opt/fastapi/dokcer-compose.yml
+        dest: /opt/fastapi/docker-compose.yml
         # owner: foo
         # group: foo
         # mode: '0644'
+    - name: Copy .env file to VM
+      ansible.builtin.copy:
+        src: /home/vboxuser/Desktop/fastapi-sample-project/.env
+        dest: /opt/fastapi/.env
+
+    # - name: Copy Mongo database to vm
+    #   ansible.builtin.copy:
+    #     src: /home/vboxuser/Desktop/fastapi-sample-project/data
+    #     dest: /opt/fastapi/data
+    #     become: yes
+    
+    # - name: Update permissions for Mongo db directory
+    #   file:
+    #     path: /opt/fastapi/data
+    #     owner: root
+    #     group: root
+    #     mode: '0755'
 
 
     - name: Run docker image
       community.docker.docker_compose_v2:
         build: always
         project_src: /opt/fastapi/
-    
-
-    
-    
+        env_files: /opt/fastapi/.env
+        
