@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.tasks import create_task
+from tasks import create_task
 from pymongo import MongoClient
 from fastapi.staticfiles import StaticFiles
 from starlette.responses import FileResponse
