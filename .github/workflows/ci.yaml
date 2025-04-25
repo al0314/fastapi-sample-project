@@ -110,7 +110,7 @@ jobs:
               echo "PR already exists, skipping creation." 
             else
               gh pr create \
-                --base development \
+                --base dev \
                 --head "$BRANCH_NAME" \
                 --title "Auto PR: Merge $BRANCH_NAME into development" \
                 --body "This pull request was automatically created by GitHub Action."
