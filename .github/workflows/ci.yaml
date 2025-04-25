@@ -88,17 +88,19 @@ jobs:
       steps:
         - name: Checkout repository
           uses: actions/checkout@v4
+        - name: Get Branch name
+          run: echo "BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
         - name: Create Pull Request
           env:
             GH_TOKEN: ${{secrets.GIT_PAT2}}
           run: |
-            if gh pr list --base development --head feature/new --state open | grep -q "feature/new"; then
+            if gh pr list --base development --head "$BRANCH_NAME" --state open | grep -q "$BRANCH_NAME"; then
               echo "PR already exists, skipping creation." 
             else
               gh pr create \
                 --base development \
-                --head feature/new \
-                --title "Auto PR: Merge feature/new into development" \
+                --head "$BRANCH_NAME" \
+                --title "Auto PR: Merge $BRANCH_NAME into development" \
                 --body "This pull request was automatically created by GitHub Action."
               echo "PR created successfully."
             fi
