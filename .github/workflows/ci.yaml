@@ -92,7 +92,7 @@ jobs:
           run: echo "BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
         - name: Create Pull Request
           env:
-            GH_TOKEN: ${{secrets.GIT_PAT2}}
+            GITHUB_TOKEN: ${{secrets.GIT_PAT2}}
           run: |
             if gh pr list --base development --head "$BRANCH_NAME" --state open | grep -q "$BRANCH_NAME"; then
               echo "PR already exists, skipping creation." 
@@ -104,4 +104,3 @@ jobs:
                 --body "This pull request was automatically created by GitHub Action."
               echo "PR created successfully."
             fi
-            
