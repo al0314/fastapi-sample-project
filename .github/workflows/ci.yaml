@@ -89,11 +89,11 @@ jobs:
         - name: Checkout repository
           uses: actions/checkout@v4
 
-        - name: Authenticate gh CLI
-          env:
-            GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          run: |
-            gh auth login
+        # - name: Authenticate gh CLI
+        #   env:
+        #     GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        #   run: |
+        #     gh auth login
         
         - name: Get Branch name
           run: echo "BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
@@ -102,7 +102,7 @@ jobs:
         
         - name: Create Pull Request
           env:
-            GITHUB_TOKEN: ${{secrets.GIT_PAT2}}
+            GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           run: |
             if gh pr list --base development --head "$BRANCH_NAME" --state open | grep -q "$BRANCH_NAME"; then
               echo "PR already exists, skipping creation." 
