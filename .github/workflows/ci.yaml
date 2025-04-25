@@ -106,7 +106,7 @@ jobs:
           env:
             GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           run: |
-            if gh pr list --base development --head "$BRANCH_NAME" --state open | grep -q "$BRANCH_NAME"; then
+            if gh pr list --base dev --head "$BRANCH_NAME" --state open | grep -q "$BRANCH_NAME"; then
               echo "PR already exists, skipping creation." 
             else
               gh pr create \
