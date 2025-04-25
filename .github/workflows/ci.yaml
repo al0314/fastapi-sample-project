@@ -88,15 +88,17 @@ jobs:
       steps:
         - name: Checkout repository
           uses: actions/checkout@v4
-        
-        - name: Get Branch name
-          run: echo "BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
-        
+
         - name: Authenticate gh CLI
           env:
             GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           run: |
             gh auth login
+        
+        - name: Get Branch name
+          run: echo "BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
+        
+        
         
         - name: Create Pull Request
           env:
