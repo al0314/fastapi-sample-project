@@ -104,31 +104,4 @@ jobs:
                 --body "This pull request was automatically created by GitHub Action."
               echo "PR created successfully."
             fi
-          
-    
-    # auto-merge:
-    #   runs-on: ubuntu-latest
-    #   needs: unit-test
-
-    #   steps:
-    #     - name: Checkout code
-    #       uses: actions/checkout@v2
-
-    #     - name: Setup Git
-    #       run: |
-    #         git config --global user.name "CI-bot"
-    #         git config --global user.email "CI-bot@github.com"
-        
-    #     - name: Fetch all branches to ensure we can rebase
-    #       run: git fetch --all
-      
-    #     - name: Checkout the dev branch
-    #       run: |
-    #           git checkout -b dev origin/dev
-    #     - name: Merge feature branch into dev
-    #       run: |
-    #         FEATURE_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-    #         git merge origin/$FEATURE_BRANCH --no-ff --commit --no-edit
-        
-    #     - name: Push merged changes to dev
-    #       run: git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} dev
+            
